@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DBSCAN Masterclass: 70-Question Comprehensive Examination</title>
+  <style>
+    :root {
+      --primary: #1e293b;
+      --primary-dark: #0f172a;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+      --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header & Navigation Bar */
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-title h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-title p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .mode-switch {
+      display: flex;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .mode-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--card-bg);
+      color: var(--accent);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .timer-badge {
+      font-family: var(--font-mono);
+      background: var(--primary-dark);
+      color: #38bdf8;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Layout Grid */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Main Question Card */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .meta-tags {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-category {
+      background: #eff6ff;
+      color: var(--accent);
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-difficulty-easy {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-difficulty-medium {
+      background: #fffbeb;
+      color: #d97706;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-difficulty-hard {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .question-number {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .question-stem {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .context-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-left-width: 4px;
+    }
+
+    /* Options List */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 14px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .option-item:hover:not(.disabled) {
+      border-color: var(--accent);
+      background: #f8fafc;
+    }
+
+    .option-item.selected {
+      border-color: var(--accent);
+      background: #eff6ff;
+    }
+
+    .option-item.correct-revealed {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: #065f46;
+      font-weight: 500;
+    }
+
+    .option-item.wrong-revealed {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #991b1b;
+    }
+
+    .opt-key {
+      font-weight: 700;
+      margin-right: 12px;
+      min-width: 24px;
+      height: 24px;
+      background: #e2e8f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+
+    .option-item.selected .opt-key {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .option-item.correct-revealed .opt-key {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .option-item.wrong-revealed .opt-key {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .opt-text {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+
+    /* Explanation Box */
+    .explanation-box {
+      margin-top: 20px;
+      padding: 18px 22px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--accent);
+      font-size: 0.9rem;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .explanation-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Action Footer Buttons */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: #ffffff;
+    }
+
+    .btn-warning:hover {
+      background: #b45309;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    /* Sidebar / Navigator */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .progress-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .progress-bar-container {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .nav-grid-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      max-height: 480px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-grid-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-btn {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .grid-btn:hover {
+      border-color: var(--accent);
+      background: #eff6ff;
+    }
+
+    .grid-btn.active {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+      font-weight: 700;
+    }
+
+    .grid-btn.answered {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: var(--accent);
+    }
+
+    .grid-btn.correct-flag {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+      color: #047857;
+    }
+
+    .grid-btn.wrong-flag {
+      background: #fef2f2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+
+    .grid-btn.flagged {
+      position: relative;
+    }
+
+    .grid-btn.flagged::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 6px;
+      height: 6px;
+      background: var(--warning);
+      border-radius: 50%;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: var(--radius);
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .score-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .score-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .score-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .score-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .review-item {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #ffffff;
+    }
+
+    .review-item.pass {
+      border-left: 4px solid var(--success);
+    }
+
+    .review-item.fail {
+      border-left: 4px solid var(--danger);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand-title">
+      <h1>🎓 DBSCAN Comprehensive Examination</h1>
+      <p>Department of Data Science & Machine Learning — 70 Standard Evaluation Set</p>
+    </div>
+    <div class="header-controls">
+      <div class="mode-switch">
+        <button class="mode-btn active" id="btnModePractice" onclick="setAppMode('practice')">Practice Mode</button>
+        <button class="mode-btn" id="btnModeExam" onclick="setAppMode('exam')">Exam Mode</button>
+      </div>
+      <div class="timer-badge" id="examTimer">⏱️ Practice (Untimed)</div>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- Question Display Area -->
+    <main>
+      <div class="card" id="questionCard">
+        <div class="question-header">
+          <div class="meta-tags">
+            <span class="badge badge-category" id="badgeCategory">General</span>
+            <span class="badge badge-difficulty-medium" id="badgeDifficulty">Medium</span>
+          </div>
+          <div class="question-number" id="questionCounter">Question 1 of 70</div>
+        </div>
+
+        <div id="contextBoxContainer"></div>
+
+        <div class="question-stem" id="questionStem">Loading question stem...</div>
+
+        <div class="options-list" id="optionsContainer"></div>
+
+        <div id="explanationContainer"></div>
+
+        <div class="card-footer">
+          <div>
+            <button class="btn btn-outline" id="btnFlag" onclick="toggleFlagCurrentQuestion()">🚩 Flag for Review</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" id="btnPrev" onclick="navigateQuestion(-1)">← Previous</button>
+            <button class="btn btn-primary" id="btnNext" onclick="navigateQuestion(1)">Next →</button>
+            <button class="btn btn-danger" id="btnSubmitExam" style="display: none;" onclick="promptSubmitExam()">Submit Exam</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar Navigator -->
+    <aside class="sidebar">
+      <div class="progress-card">
+        <div class="progress-info">
+          <span>Completion Progress</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-fill" id="progressBar"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+          <span id="answeredCount">0 Answered</span>
+          <span id="flaggedCount">0 Flagged</span>
+        </div>
+      </div>
+
+      <div class="nav-grid-card">
+        <div class="nav-grid-header">
+          <span>Question Navigator</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Jump to Q</span>
+        </div>
+        <div class="question-grid" id="questionGrid"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Submission Result Modal -->
+<div class="modal-overlay" id="resultModal" style="display: none;">
+  <div class="modal-content">
+    <h2 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 6px;">📋 Examination Report & Analysis</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">Evaluation across all 70 DBSCAN foundational and computational topics.</p>
+
+    <div class="score-summary-grid">
+      <div class="score-box">
+        <div class="score-value" id="resScore">0/70</div>
+        <div class="score-label">Final Raw Score</div>
+      </div>
+      <div class="score-box">
+        <div class="score-value" id="resPercent">0%</div>
+        <div class="score-label">Percentage Score</div>
+      </div>
+      <div class="score-box">
+        <div class="score-value" id="resStatus" style="font-size: 1.4rem;">Evaluating</div>
+        <div class="score-label">Proficiency Grade</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.1rem; margin: 20px 0 12px; color: var(--primary);">Detailed Review & Teardown</h3>
+    <div id="reviewListContainer" style="max-height: 400px; overflow-y: auto;"></div>
+
+    <div style="margin-top: 24px; text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+      <button class="btn btn-outline" onclick="closeModalAndSwitchToPractice()">Review in Practice Mode</button>
+      <button class="btn btn-primary" onclick="restartEntireAssessment()">Restart Exam</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================================
+   COMPREHENSIVE 70-QUESTION EXAM DATA STRUCTURE
+   Distribution of Keys: A (18), B (17), C (18), D (17) = Exactly 70 Questions.
+========================================================================================= */
+const examQuestions = [
+  // MODULE 1: FOUNDATIONS & INTUITION (Q1 - Q8)
+  {
+    id: 1,
+    category: "Foundations & Intuition",
+    difficulty: "Easy",
+    question: "What is the complete academic expansion of the acronym DBSCAN?",
+    options: [
+      "Density-Based Spatial Clustering of Applications for Networks",
+      "Density-Based Spatial Clustering of Applications with Noise",
+      "Distance-Based Spatial Clustering of Applications with Noise",
+      "Density-Bounded Segmentation and Clustering for Automated Nodes"
+    ],
+    correct: 1,
+    explanation: "DBSCAN stands for Density-Based Spatial Clustering of Applications with Noise (Ester et al., 1996). Option A confuses 'Noise' with 'Networks', Option C incorrectly states 'Distance-Based', and Option D is completely fabricated."
+  },
+  {
+    id: 2,
+    category: "Foundations & Intuition",
+    difficulty: "Easy",
+    question: "Unlike centroid-based partitioning algorithms like K-Means, how does DBSCAN fundamentally define a cluster?",
+    options: [
+      "As a continuous maximal region of high spatial density separated by regions of low density",
+      "As a set of Voronoi partitions mapped around k iteratively refined arithmetic centroids",
+      "As a strictly hierarchical dendrogram structured by minimum spanning tree distances",
+      "As a probabilistic mixture of Gaussian distributions optimized via Expectation-Maximization"
+    ],
+    correct: 0,
+    explanation: "Option A is the formal textbook definition of a density-based cluster. Option B describes K-Means (Voronoi partitioning), Option C describes Agglomerative Hierarchical Clustering, and Option D describes Gaussian Mixture Models (GMM)."
+  },
+  {
+    id: 3,
+    category: "Foundations & Intuition",
+    difficulty: "Medium",
+    question: "Why does K-Means perform poorly on concentric ring datasets, whereas DBSCAN clusters them perfectly?",
+    options: [
+      "K-Means requires labeled target data, whereas DBSCAN is entirely unsupervised",
+      "K-Means cannot compute Euclidean distance in 2-dimensional continuous feature spaces",
+      "DBSCAN computes cluster medoids instead of arithmetic means for spherical bounds",
+      "K-Means enforces convex/spherical cluster boundaries, whereas DBSCAN follows non-linear density paths"
+    ],
+    correct: 3,
+    explanation: "K-Means assumes convex, spherical geometry due to its objective of minimizing squared Euclidean distances to a single centroid. DBSCAN discovers arbitrary, non-convex shapes by chaining density-connected core instances regardless of geometric curvature."
+  },
+  {
+    id: 4,
+    category: "Foundations & Intuition",
+    difficulty: "Easy",
+    question: "What is the primary advantage of DBSCAN regarding the number of clusters (k) prior to execution?",
+    options: [
+      "It mathematically computes the exact global inertia curve before creating clusters",
+      "It requires the user to specify an upper bound on k, but optimizes the lower bound",
+      "It automatically discovers the number of clusters based on local density without specifying k",
+      "It guarantees finding exactly k=2 clusters when initialized on non-linear manifolds"
+    ],
+    correct: 2,
+    explanation: "DBSCAN does not require a predefined number of clusters (k). It automatically determines the cluster count based on the interplay between ε (radius) and MinPts (density threshold)."
+  },
+  {
+    id: 5,
+    category: "Foundations & Intuition",
+    difficulty: "Medium",
+    question: "How does DBSCAN treat isolated points located in low-density regions that are not reachable from any dense core?",
+    options: [
+      "It creates single-instance singleton clusters for every isolated point",
+      "It isolates and labels them as noise/outliers (assigned cluster label -1 in implementations)",
+      "It merges them with the closest cluster based strictly on nearest centroid distance",
+      "It discards them from memory during step 1 and causes an execution exception"
+    ],
+    correct: 1,
+    explanation: "DBSCAN has built-in noise tolerance. Points in low-density regions that fail the core threshold and are not in any core neighborhood are classified as noise (represented as label -1 in Scikit-Learn)."
+  },
+  {
+    id: 6,
+    category: "Foundations & Intuition",
+    difficulty: "Hard",
+    question: "Consider a uniform dataset where points are distributed with completely identical spatial density throughout the entire bounding box. What is the expected behavior of DBSCAN if ε and MinPts are tuned such that density conditions are everywhere satisfied?",
+    options: [
+      "It will group all points into one single massive continuous cluster",
+      "It will split the space into k uniform Voronoi geometric cells",
+      "It will mark all points as noise due to lack of local density gradients",
+      "It will throw an algorithmic convergence error due to infinite seed expansion"
+    ],
+    correct: 0,
+    explanation: "Because density is uniform and satisfies the threshold everywhere, every point becomes a core point connected to its neighbors. The density expansion chains across the entire space, resulting in one single global cluster."
+  },
+  {
+    id: 7,
+    category: "Foundations & Intuition",
+    difficulty: "Medium",
+    question: "Which of the following real-world applications is most naturally suited for DBSCAN over K-Means?",
+    options: [
+      "Image color quantization where pixels must be assigned to exactly 16 palette centroids",
+      "Market customer segmentation requiring strict, equal-sized demographic quartiles",
+      "Geospatial anomaly detection and tracking winding vehicle trajectory corridors",
+      "Compressing deep learning weights into uniformly spaced codebook bins"
+    ],
+    correct: 2,
+    explanation: "Vehicle trajectories follow irregular, non-linear geometric paths and contain GPS noise/outliers, making DBSCAN's arbitrary shape discovery and noise isolation ideal. Options A, B, and D are standard centroid/quantization problems."
+  },
+  {
+    id: 8,
+    category: "Foundations & Intuition",
+    difficulty: "Easy",
+    question: "What fundamental limitation of centroid-based clustering was DBSCAN explicitly developed to overcome?",
+    options: [
+      "The inability to execute in polynomial runtime on large multi-core processors",
+      "The reliance on iterative gradient descent for numerical convergence",
+      "The requirement of storing high-dimensional matrices in distributed RAM",
+      "The forced assignment of true outliers into clusters and rigid spherical assumptions"
+    ],
+    correct: 3,
+    explanation: "Centroid-based algorithms (like K-Means) force every point (including severe outliers) into a cluster and suffer when clusters have arbitrary, non-spherical geometries. DBSCAN directly resolves both flaws."
+  },
+
+  // MODULE 2: MATHEMATICAL DEFINITIONS & POINT CLASSIFICATION (Q9 - Q18)
+  {
+    id: 9,
+    category: "Definitions & Point Classification",
+    difficulty: "Easy",
+    question: "Given a dataset D and a distance metric dist(p, q), how is the ε-neighborhood of a point p, denoted N_ε(p), formally defined?",
+    options: [
+      "N_ε(p) = { q ∈ D | dist(p, q) ≤ ε }",
+      "N_ε(p) = { q ∈ D | dist(p, q) < MinPts / ε }",
+      "N_ε(p) = { q ∈ D | dist(p, q) ≥ ε }",
+      "N_ε(p) = { q ∈ D | ∑ dist(p, q) ≤ MinPts }"
+    ],
+    correct: 0,
+    explanation: "The ε-neighborhood N_ε(p) is defined as the subset of points in dataset D whose distance to point p is less than or equal to the radius threshold ε."
+  },
+  {
+    id: 10,
+    category: "Definitions & Point Classification",
+    difficulty: "Medium",
+    question: "What is the exact condition for a point p to be classified as a Core Instance (Core Point) in standard DBSCAN?",
+    options: [
+      "|N_ε(p)| < MinPts and p is within distance ε of another core instance",
+      "|N_ε(p)| > 2 × MinPts excluding point p itself",
+      "|N_ε(p)| ≥ MinPts (where N_ε(p) includes point p itself)",
+      "dist(p, centroid) ≤ ε / MinPts across all existing partitions"
+    ],
+    correct: 2,
+    explanation: "A point p is a Core Point if and only if its ε-neighborhood contains at least MinPts points (|N_ε(p)| ≥ MinPts), with point p included in the count."
+  },
+  {
+    id: 11,
+    category: "Definitions & Point Classification",
+    difficulty: "Medium",
+    question: "What is the formal academic definition of a Border Point in DBSCAN?",
+    options: [
+      "A point with |N_ε(p)| ≥ MinPts that is located on the convex hull boundary",
+      "A point with |N_ε(p)| < MinPts that belongs to the ε-neighborhood of at least one Core Point",
+      "A point that has exactly zero neighbors within distance 2ε in the feature space",
+      "A point equidistant from two distinct arithmetic cluster centroids"
+    ],
+    correct: 1,
+    explanation: "A Border Point does not have enough neighbors to be a core point (|N_ε(p)| < MinPts), but it falls within the ε-neighborhood of an established core point."
+  },
+  {
+    id: 12,
+    category: "Definitions & Point Classification",
+    difficulty: "Easy",
+    question: "Which statement accurately describes a Noise Point (Outlier)?",
+    options: [
+      "Any point that has fewer than MinPts neighbors but touches a Core Point",
+      "Any point located outside the 95% confidence ellipse of the dataset",
+      "Any point that is directly reachable from at least two different core instances",
+      "Any point that is not a core point and does not lie within the ε-neighborhood of any core point"
+    ],
+    correct: 3,
+    explanation: "A point is noise if and only if it is neither a core point nor density-reachable from any core point (i.e. not in the neighborhood of any core point)."
+  },
+  {
+    id: 13,
+    category: "Definitions & Point Classification",
+    difficulty: "Medium",
+    question: "If MinPts = 5 and ε = 1.0, how many OTHER distinct data points must fall within distance 1.0 of point p for p to be a Core Point?",
+    options: [
+      "At least 4 other points",
+      "At least 5 other points",
+      "Exactly 6 other points",
+      "At least 10 other points"
+    ],
+    correct: 0,
+    explanation: "Since N_ε(p) includes p itself, |N_ε(p)| = 1 (itself) + (number of other points) ≥ 5. Therefore, it requires at least 4 other points."
+  },
+  {
+    id: 14,
+    category: "Definitions & Point Classification",
+    difficulty: "Hard",
+    question: "Can a Border Point expand a cluster by pulling its own neighbors into the cluster during the expansion phase?",
+    options: [
+      "Yes, all points in DBSCAN expand clusters recursively until empty",
+      "Yes, provided its local neighborhood contains at least (MinPts - 1) points",
+      "No, cluster expansion is strictly driven by the ε-neighborhoods of Core Points",
+      "No, unless the algorithm is initialized with a randomized seed ordering"
+    ],
+    correct: 2,
+    explanation: "Border points are added to the cluster of the core point that reached them, but their own neighborhoods are NOT added to the expansion queue. This prevents density leakage into sparse regions."
+  },
+  {
+    id: 15,
+    category: "Definitions & Point Classification",
+    difficulty: "Medium",
+    question: "What is the geometric shape of the ε-neighborhood N_ε(p) in a 3-dimensional continuous space using Manhattan (L1) distance?",
+    options: [
+      "A perfect sphere of radius ε",
+      "A regular octahedron (cross-polytope)",
+      "An axis-aligned hypercube of side length 2ε",
+      "A 3D cylinder with height proportional to MinPts"
+    ],
+    correct: 1,
+    explanation: "Under the L1 norm (Manhattan distance) in 3D, the locus of points satisfying |x1-p1| + |x2-p2| + |x3-p3| ≤ ε forms a regular octahedron. (Euclidean L2 forms a sphere; Chebyshev L∞ forms a cube)."
+  },
+  {
+    id: 16,
+    category: "Definitions & Point Classification",
+    difficulty: "Easy",
+    question: "In a single run of DBSCAN on a fixed dataset with fixed parameters, can a single data point be simultaneously classified as both a Core Point and a Noise Point?",
+    options: [
+      "Yes, if it borders two conflicting clusters",
+      "Yes, if MinPts is set to an odd integer",
+      "Yes, if its distance to the nearest core point is exactly equal to ε",
+      "No, the classifications (Core, Border, Noise) are mutually exclusive for any single instance"
+    ],
+    correct: 3,
+    explanation: "Every point is uniquely categorized into one of three disjoint sets: Core, Border, or Noise. A point cannot belong to more than one category in a given execution."
+  },
+  {
+    id: 17,
+    category: "Definitions & Point Classification",
+    difficulty: "Hard",
+    question: "Suppose we run DBSCAN with MinPts = 1. What is the resulting classification of the data points?",
+    options: [
+      "Every single point becomes a Core Point; noise points cannot exist",
+      "All points are classified as noise because MinPts must be at least 2",
+      "Points with zero neighbors become border points, and all others become noise",
+      "The algorithm enters an infinite loop during neighborhood query evaluation"
+    ],
+    correct: 0,
+    explanation: "Since N_ε(p) always contains p itself (|N_ε(p)| ≥ 1), every point trivially satisfies |N_ε(p)| ≥ 1 = MinPts. Thus, every point is a core point, and 0 noise points exist."
+  },
+  {
+    id: 18,
+    category: "Definitions & Point Classification",
+    difficulty: "Medium",
+    question: "If point A is within distance ε of core point B, but point A has only 2 points in its own neighborhood (where MinPts = 4), what is the definitive status of point A?",
+    options: [
+      "Noise Point",
+      "Core Point",
+      "Border Point",
+      "Centroid Point"
+    ],
+    correct: 2,
+    explanation: "Point A has |N_ε(A)| = 2 < 4 (not a core point), but it is within the ε-neighborhood of core point B. Therefore, by definition, point A is a Border Point."
+  },
+
+  // MODULE 3: DENSITY-REACHABILITY & CONNECTIVITY THEOREMS (Q19 - Q26)
+  {
+    id: 19,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Medium",
+    question: "Let point p be directly density-reachable from point q. Which condition MUST hold?",
+    options: [
+      "Both p and q must have at least 2 × MinPts neighbors",
+      "Point q must be a Core Point, and p must belong to N_ε(q)",
+      "Point p must be a Core Point, and q must belong to N_ε(p)",
+      "The Euclidean distance between p and q must equal exactly ε / 2"
+    ],
+    correct: 1,
+    explanation: "By definition, p is directly density-reachable from q if q is a Core Point and p ∈ N_ε(q). Notice this relation is asymmetric: p does not need to be a core point."
+  },
+  {
+    id: 20,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Medium",
+    question: "Is the relation 'Direct Density-Reachability' symmetric in general?",
+    options: [
+      "Yes, if p is directly density-reachable from q, q is always directly density-reachable from p",
+      "No, because if q is a core point and p is a border point, p is reachable from q, but q cannot be directly density-reachable from p",
+      "Yes, because distance metrics (like Euclidean) are symmetric",
+      "No, only when using non-Euclidean metrics such as Cosine distance"
+    ],
+    correct: 1,
+    explanation: "Direct density-reachability is asymmetric. If q is a core point and p is a border point, p ∈ N_ε(q) (so p is directly density-reachable from q). But since p is not a core point, q cannot be directly density-reachable from p."
+  },
+  {
+    id: 21,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Hard",
+    question: "Point p is 'Density-Reachable' from point q if there exists a chain of points p_1, p_2, ..., p_n (where p_1 = q and p_n = p) such that:",
+    options: [
+      "Each p_{i+1} is directly density-reachable from p_i",
+      "The sum of distances along the chain is strictly less than ε",
+      "Every intermediate point p_i is a border point",
+      "p_n is a core point and p_1 is an outlier"
+    ],
+    correct: 0,
+    explanation: "Density-reachability is the transitive closure of direct density-reachability: a chain where each point p_{i+1} is directly density-reachable from core point p_i."
+  },
+  {
+    id: 22,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Hard",
+    question: "How is 'Density-Connectivity' defined for two points p and q with respect to ε and MinPts?",
+    options: [
+      "dist(p, q) must be less than 2ε and both must have identical neighbor counts",
+      "Point p must be directly reachable from q, and q must be directly reachable from p",
+      "There exists a point o such that both p and q are density-reachable from o",
+      "Points p and q must share at least MinPts common neighbors in their intersection"
+    ],
+    correct: 2,
+    explanation: "Density-connectivity covers the relation between border points in the same cluster: p and q are density-connected if there exists a common core point o from which both p and q are density-reachable."
+  },
+  {
+    id: 23,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Medium",
+    question: "Which of the following relations in DBSCAN is mathematically SYMMETRIC?",
+    options: [
+      "Direct Density-Reachability",
+      "Density-Reachability",
+      "Density-Connectivity",
+      "Directional Core Expansion"
+    ],
+    correct: 2,
+    explanation: "Density-connectivity is symmetric: if p is density-connected to q (via point o), then q is density-connected to p (via the same point o). Direct density-reachability and density-reachability are asymmetric between cores and borders."
+  },
+  {
+    id: 24,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Hard",
+    question: "Can two Border Points in the same cluster be density-reachable from each other?",
+    options: [
+      "Yes, all points inside the same cluster are mutually density-reachable",
+      "Yes, provided they are separated by less than distance ε / 2",
+      "No, because a border point cannot serve as a core point to initiate reachability to another point",
+      "No, unless they share the exact same spatial coordinate"
+    ],
+    correct: 2,
+    explanation: "Reachability requires starting from/passing through core points. Since border points cannot reach any points, neither border point can reach the other. They are connected, but not reachable from each other."
+  },
+  {
+    id: 25,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Hard",
+    question: "A density-based cluster C in DBSCAN is formally defined as a non-empty subset of dataset D satisfying which two fundamental mathematical properties?",
+    options: [
+      "Maximality (if p ∈ C and q is density-reachable from p, then q ∈ C) and Connectivity (all pairs in C are density-connected)",
+      "Convexity (all points on the line segment between p, q are in C) and Centroid Minimization",
+      "Separability (dist(C_i, C_j) > 2ε) and Orthogonality of Principal Components",
+      "Homogeneity (equal variance across dimensions) and Non-zero Noise Ratio"
+    ],
+    correct: 0,
+    explanation: "The formal definition of a cluster C in DBSCAN requires: (1) Maximality: ∀ p, q: if p ∈ C and q is density-reachable from p, then q ∈ C. (2) Connectivity: ∀ p, q ∈ C: p is density-connected to q."
+  },
+  {
+    id: 26,
+    category: "Theoretical Properties & Connectivity",
+    difficulty: "Medium",
+    question: "If core point C1 is density-reachable from core point C2, which of the following is guaranteed to be true?",
+    options: [
+      "C1 and C2 must belong to completely different clusters",
+      "C1 has strictly fewer neighbors than C2",
+      "C2 is also density-reachable from C1",
+      "C1 and C2 must have identical spatial coordinates"
+    ],
+    correct: 2,
+    explanation: "Between CORE points, density-reachability IS symmetric. If C1 and C2 are both cores and C1 is reachable from C2, the chain can be reversed through the overlapping core neighborhoods, so C2 is reachable from C1."
+  },
+
+  // MODULE 4: ALGORITHM WORKFLOW & TRACING (Q27 - Q34)
+  {
+    id: 27,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Easy",
+    question: "What is the initial state/label of all data points at the very beginning of the DBSCAN algorithm?",
+    options: [
+      "Assigned to Cluster 0",
+      "Unvisited / Undefined",
+      "Pre-assigned as Core Points",
+      "Marked permanently as Noise"
+    ],
+    correct: 1,
+    explanation: "Initially, all data points are marked as unvisited (or undefined). As the algorithm progresses, their status is updated to core, border, noise, and assigned cluster IDs."
+  },
+  {
+    id: 28,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Medium",
+    question: "During cluster expansion in DBSCAN, how are newly discovered neighboring points processed?",
+    options: [
+      "They are evaluated by training an auxiliary decision tree classifier",
+      "They are added to the cluster only after computing the global cluster mean",
+      "They are projected onto 1D space using PCA before neighbor counting",
+      "They are added to a seed queue/set; if any neighbor is also a Core Point, its own neighborhood is unioned into the seed queue"
+    ],
+    correct: 3,
+    explanation: "DBSCAN maintains a seed set/queue. When a core point is processed, all its ε-neighbors are added. If an added neighbor is also a core point, its own ε-neighborhood is merged into the queue to continue expansion."
+  },
+  {
+    id: 29,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Medium",
+    question: "What happens when DBSCAN encounters an unvisited point that has fewer than MinPts neighbors during its initial scan?",
+    options: [
+      "It is temporarily marked as Noise (which may later change to a Border Point if reached by a core)",
+      "It is permanently deleted from the dataset to accelerate distance computations",
+      "It immediately halts the entire algorithm and returns an error",
+      "It forces the creation of a new micro-cluster with ε = 0"
+    ],
+    correct: 0,
+    explanation: "The point is tentatively labeled as Noise. If a subsequently processed core point has this point in its ε-neighborhood, its label is updated from Noise to Border point belonging to that cluster."
+  },
+  {
+    id: 30,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Hard",
+    question: "Suppose a non-core point B falls within the ε-neighborhood of Core Point C1 (Cluster 1) and ALSO Core Point C2 (Cluster 2). How does standard sequential DBSCAN resolve this assignment?",
+    options: [
+      "Point B is duplicated into both Cluster 1 and Cluster 2 simultaneously",
+      "Point B is rejected from both clusters and permanently labeled as Noise",
+      "Point B is assigned to whichever cluster visits and processes it first",
+      "Point B triggers a merger between Cluster 1 and Cluster 2 into a single cluster"
+    ],
+    correct: 2,
+    explanation: "Sequential DBSCAN is order-dependent for shared border points: point B will be assigned to the cluster of whichever core point (C1 or C2) discovers it first during execution."
+  },
+  {
+    id: 31,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Hard",
+    question: "Is the final set of CORE POINTS generated by DBSCAN deterministic or dependent on the processing order of points?",
+    options: [
+      "Completely non-deterministic; core status changes with different seed points",
+      "Completely deterministic; a point's core status depends solely on |N_ε(p)| ≥ MinPts",
+      "Deterministic only when MinPts is an even number",
+      "Deterministic only when using Manhattan distance"
+    ],
+    correct: 1,
+    explanation: "The core point set and noise set are 100% deterministic because the neighborhood condition |N_ε(p)| ≥ MinPts depends strictly on fixed spatial distances, not traversal order. Only shared border assignments may vary."
+  },
+  {
+    id: 32,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Medium",
+    question: "What triggers the termination of a single cluster's expansion in DBSCAN?",
+    options: [
+      "When the cluster reaches a predefined maximum size limit",
+      "When the distance between the centroid and boundary exceeds 2ε",
+      "When the seed set of connected core points is exhausted and no more core points can be added",
+      "When exactly 50% of the dataset has been processed"
+    ],
+    correct: 2,
+    explanation: "Cluster expansion ends when the queue/seed list of points to inspect becomes empty—meaning all density-reachable core and border points have been absorbed."
+  },
+  {
+    id: 33,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Easy",
+    question: "When does the entire DBSCAN algorithm officially complete its execution?",
+    options: [
+      "When all points in the dataset have been visited and evaluated",
+      "When the cluster centroids shift by less than a tolerance threshold 1e-4",
+      "When exactly k clusters have been formed in the output",
+      "When the ratio of noise points reaches zero"
+    ],
+    correct: 0,
+    explanation: "DBSCAN iterates through the dataset until every single point has been visited, tested for core status, and assigned to a cluster or confirmed as noise."
+  },
+  {
+    id: 34,
+    category: "Algorithm Workflow & Tracing",
+    difficulty: "Hard",
+    question: "Why does a shared border point between Cluster 1 and Cluster 2 NOT cause the two clusters to merge into one?",
+    options: [
+      "Because border points have their coordinates adjusted to zero",
+      "Because clusters can only merge if they contain equal numbers of instances",
+      "Because border points do not expand clusters; their neighborhoods are not added to the queue",
+      "Because the distance between two clusters is always computed using complete linkage"
+    ],
+    correct: 2,
+    explanation: "Merging requires density-reachability through core points. Since a border point is not a core point, DBSCAN does not expand through it, preventing a false density bridge between two distinct clusters."
+  },
+
+  // MODULE 5: CHAINED CALCULATION SET 1 - 2D COORDINATES (Q35 - Q40)
+  // Context: Points P1(1,1), P2(2,1), P3(1,2), P4(2,2), P5(5,5), P6(6,5), P7(9,9). eps = 1.5, MinPts = 4.
+  {
+    id: 35,
+    category: "Chained Dataset Calculations (Coordinates)",
+    difficulty: "Medium",
+    question: "Consider Dataset 1: P1(1,1), P2(2,1), P3(1,2), P4(2,2), P5(5,5), P6(6,5), P7(9,9) with ε = 1.5 and MinPts = 4. What is the exact ε-neighborhood N_1.5(P1)?",
+    options: [
+      "{P1, P2}",
+      "{P1, P2, P3, P4}",
+      "{P1, P2, P3}",
+      "{P1, P2, P3, P4, P5}"
+    ],
+    correct: 1,
+    explanation: "d(P1,P1)=0 ≤ 1.5; d(P1,P2)=1.0 ≤ 1.5; d(P1,P3)=1.0 ≤ 1.5; d(P1,P4)=√(1²+1²)=√2≈1.414 ≤ 1.5. Distance to P5 is √32≈5.66 > 1.5. Thus N_1.5(P1) = {P1, P2, P3, P4}."
+  },
+  {
+    id: 36,
+    category: "Chained Dataset Calculations (Coordinates)",
+    difficulty: "Medium",
+    question: "In Dataset 1 (ε = 1.5, MinPts = 4), which points qualify as CORE POINTS?",
+    options: [
+      "Only P1 and P4",
+      "All points {P1, P2, P3, P4, P5, P6}",
+      "None of the points qualify",
+      "P1, P2, P3, and P4"
+    ],
+    correct: 3,
+    explanation: "For P1, P2, P3, and P4, each point has distance ≤ √2 ≈ 1.414 to the other three. Each of their neighborhoods contains exactly {P1, P2, P3, P4} (|N| = 4 ≥ 4). Thus all four are Core Points."
+  },
+  {
+    id: 37,
+    category: "Chained Dataset Calculations (Coordinates)",
+    difficulty: "Medium",
+    question: "In Dataset 1 (ε = 1.5, MinPts = 4), what is the classification of points P5(5,5) and P6(6,5)?",
+    options: [
+      "Both are Noise Points",
+      "Both are Core Points forming Cluster 2",
+      "P5 is a Core Point and P6 is a Border Point",
+      "Both are Border Points belonging to Cluster 1"
+    ],
+    correct: 0,
+    explanation: "d(P5, P6) = 1.0 ≤ 1.5. N_1.5(P5) = {P5, P6} (|N|=2 < 4). N_1.5(P6) = {P5, P6} (|N|=2 < 4). Neither is a core point, and neither is within ε of any core point ({P1..P4} are at distance > 4). Thus, both are Noise."
+  },
+  {
+    id: 38,
+    category: "Chained Dataset Calculations (Coordinates)",
+    difficulty: "Easy",
+    question: "In Dataset 1 (ε = 1.5, MinPts = 4), what is the classification of point P7(9,9)?",
+    options: [
+      "Border Point",
+      "Core Point",
+      "Noise Point",
+      "Cluster 3 Centroid"
+    ],
+    correct: 2,
+    explanation: "P7 is completely isolated: the nearest point is P6 at d(P6,P7)=√(3²+4²)=5 > 1.5. |N_1.5(P7)| = 1 < 4, and it is not near any core. P7 is Noise."
+  },
+  {
+    id: 39,
+    category: "Chained Dataset Calculations (Coordinates)",
+    difficulty: "Hard",
+    question: "What is the final summary of clusters and noise points produced by DBSCAN on Dataset 1 (ε = 1.5, MinPts = 4)?",
+    options: [
+      "2 Clusters ({P1, P2, P3, P4} and {P5, P6}), 1 Noise point ({P7})",
+      "1 Cluster ({P1, P2, P3, P4}), 3 Noise points ({P5, P6, P7})",
+      "0 Clusters, 7 Noise points",
+      "3 Clusters, 0 Noise points"
+    ],
+    correct: 1,
+    explanation: "{P1, P2, P3, P4} form Cluster 1 via mutual core expansion. Points P5, P6, and P7 fail the density threshold and are not reachable by any core point, resulting in exactly 3 noise points."
+  },
+  {
+    id: 40,
+    category: "Chained Dataset Calculations (Coordinates)",
+    difficulty: "Hard",
+    question: "Suppose on Dataset 1 we change parameters to ε = 5.0 and MinPts = 4. What happens to points P5(5,5) and P6(6,5)?",
+    options: [
+      "They remain Noise Points because they are odd numbered",
+      "They form an independent second cluster separate from P1..P4",
+      "They cause the algorithm to fail due to division by zero",
+      "They become absorbed into Cluster 1 with {P1, P2, P3, P4}"
+    ],
+    correct: 3,
+    explanation: "With ε = 5.0, d(P4(2,2), P5(5,5)) = √(3²+3²) = √18 ≈ 4.24 ≤ 5.0. P4 (core) now reaches P5 and P6, expanding Cluster 1 to encompass {P1, P2, P3, P4, P5, P6}."
+  },
+
+  // MODULE 6: CHAINED CALCULATION SET 2 - DISTANCE MATRIX (Q41 - Q46)
+  // Distance Matrix between 6 points A, B, C, D, E, F:
+  // d(A,B)=1.2, d(A,C)=1.8, d(A,D)=3.5, d(A,E)=4.0, d(A,F)=5.0
+  // d(B,C)=1.4, d(B,D)=2.8, d(B,E)=3.2, d(B,F)=4.5
+  // d(C,D)=1.9, d(C,E)=3.0, d(C,F)=4.1
+  // d(D,E)=1.5, d(D,F)=1.7
+  // d(E,F)=1.1
+  // Parameters: eps = 2.0, MinPts = 3
+  {
+    id: 41,
+    category: "Chained Dataset Calculations (Distance Matrix)",
+    difficulty: "Medium",
+    question: "Given Distance Matrix 2 with ε = 2.0 and MinPts = 3. What are the neighborhood counts |N_2.0| for points A, C, and E (including themselves)?",
+    options: [
+      "|N(A)| = 3, |N(C)| = 4, |N(E)| = 3",
+      "|N(A)| = 2, |N(C)| = 3, |N(E)| = 2",
+      "|N(A)| = 4, |N(C)| = 4, |N(E)| = 4",
+      "|N(A)| = 1, |N(C)| = 2, |N(E)| = 3"
+    ],
+    correct: 0,
+    explanation: "For A: dist to A(0), B(1.2), C(1.8) are ≤ 2.0 -> N(A)={A,B,C} (count 3). For C: dist to C(0), A(1.8), B(1.4), D(1.9) are ≤ 2.0 -> N(C)={A,B,C,D} (count 4). For E: dist to E(0), D(1.5), F(1.1) are ≤ 2.0 -> N(E)={D,E,F} (count 3)."
+  },
+  {
+    id: 42,
+    category: "Chained Dataset Calculations (Distance Matrix)",
+    difficulty: "Hard",
+    question: "Using Distance Matrix 2 (ε = 2.0, MinPts = 3), which points are classified as CORE POINTS?",
+    options: [
+      "Only point C",
+      "Only points A, B, and C",
+      "Points A, B, C, D, E, and F (All 6 points)",
+      "Points A, C, D, and E only"
+    ],
+    correct: 2,
+    explanation: "Counting all points: N(A)={A,B,C} (|N|=3); N(B)={A,B,C} (|N|=3); N(C)={A,B,C,D} (|N|=4); N(D)={C,D,E,F} (|N|=4); N(E)={D,E,F} (|N|=3); N(F)={D,E,F} (|N|=3). Every single point has |N| ≥ 3 = MinPts. All 6 points are Core Points."
+  },
+  {
+    id: 43,
+    category: "Chained Dataset Calculations (Distance Matrix)",
+    difficulty: "Medium",
+    question: "In Distance Matrix 2 (ε = 2.0, MinPts = 3), is point A directly density-reachable from point C?",
+    options: [
+      "No, because d(A,C) exceeds the Manhattan threshold",
+      "Yes, because C is a Core Point and d(A,C) = 1.8 ≤ 2.0",
+      "No, because point C has more neighbors than point A",
+      "Yes, but only if point A is evaluated before point C"
+    ],
+    correct: 1,
+    explanation: "C is a core point (|N(C)| = 4 ≥ 3) and d(A,C) = 1.8 ≤ 2.0 (so A ∈ N_2.0(C)). Thus, A is directly density-reachable from C."
+  },
+  {
+    id: 44,
+    category: "Chained Dataset Calculations (Distance Matrix)",
+    difficulty: "Hard",
+    question: "In Distance Matrix 2 (ε = 2.0, MinPts = 3), what connects point A and point F into the same cluster?",
+    options: [
+      "A and F are within distance 2.0 of each other",
+      "A is a border point and F is an outlier",
+      "They are not connected and form 2 separate clusters",
+      "A density-connected path of core points: A - C - D - F"
+    ],
+    correct: 3,
+    explanation: "d(A,F)=5.0 > 2.0. However, A is connected to C (d=1.8), C is connected to D (d=1.9), and D is connected to F (d=1.7). Since A, C, D, and F are all core points, this creates a continuous density path merging all points into one cluster."
+  },
+  {
+    id: 45,
+    category: "Chained Dataset Calculations (Distance Matrix)",
+    difficulty: "Medium",
+    question: "How many total clusters and noise points are produced for Distance Matrix 2 (ε = 2.0, MinPts = 3)?",
+    options: [
+      "1 Single Cluster containing all 6 points {A, B, C, D, E, F}, 0 Noise points",
+      "2 Disjoint Clusters ({A, B, C} and {D, E, F}), 0 Noise points",
+      "3 Clusters, 2 Noise points",
+      "0 Clusters, 6 Noise points"
+    ],
+    correct: 0,
+    explanation: "All points are cores and connected via the chain A-B-C-D-E-F (specifically through bridge C-D where d(C,D)=1.9 ≤ 2.0). Thus, exactly 1 cluster is formed with 0 noise."
+  },
+  {
+    id: 46,
+    category: "Chained Dataset Calculations (Distance Matrix)",
+    difficulty: "Hard",
+    question: "If MinPts is increased to 4 (with ε = 2.0 remaining fixed), what is the new status of point D?",
+    options: [
+      "Point D becomes a Noise Point",
+      "Point D becomes a Border Point",
+      "Point D remains a Core Point because |N_2.0(D)| = 4 ≥ 4",
+      "Point D splits into two distinct medoid instances"
+    ],
+    correct: 2,
+    explanation: "N_2.0(D) = {C, D, E, F}, so |N_2.0(D)| = 4. Since 4 ≥ 4, point D maintains its Core Point status."
+  },
+
+  // MODULE 7: PARAMETER TUNING, SENSITIVITY & K-DISTANCE GRAPH (Q47 - Q54)
+  {
+    id: 47,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Medium",
+    question: "What is the primary pathological symptom when ε (epsilon) is set to an excessively small value?",
+    options: [
+      "All distinct clusters merge into one single giant cluster",
+      "Most points are classified as noise and genuine clusters fragment into micro-clusters",
+      "The execution time increases quadratically to O(N^4)",
+      "The algorithm converts internally into K-Means with k = MinPts"
+    ],
+    correct: 1,
+    explanation: "If ε is too small, sparse neighborhoods fail to capture MinPts points, causing valid clusters to shatter into fragmented pieces and labeling most data as noise."
+  },
+  {
+    id: 48,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Medium",
+    question: "What happens when ε (epsilon) is set to an excessively large value?",
+    options: [
+      "The algorithm refuses to execute and raises a ValueError",
+      "Every data point is marked as an outlier (-1)",
+      "The number of clusters approaches infinity",
+      "Different clusters and noise points merge into one single dominant cluster"
+    ],
+    correct: 3,
+    explanation: "If ε is too large, the neighborhood spans across sparse regions and bridges distinct clusters, merging the entire dataset and noise into a single giant cluster."
+  },
+  {
+    id: 49,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Medium",
+    question: "What is the primary consequence of setting MinPts to an excessively high value?",
+    options: [
+      "Only extremely dense regions form clusters; many valid clusters are lost to noise",
+      "The radius ε automatically expands to compensate",
+      "All border points are converted into core points",
+      "The computational space complexity increases from O(N) to O(N^3)"
+    ],
+    correct: 0,
+    explanation: "A very large MinPts imposes a stringent density requirement. Normal density regions fail the threshold and are discarded as noise."
+  },
+  {
+    id: 50,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Hard",
+    question: "In the standard k-distance graph heuristic for estimating optimal ε, what is plotted on the Y-axis?",
+    options: [
+      "The silhouette coefficient of each cluster",
+      "The number of iterations until centroid convergence",
+      "The distance of each point to its k-th nearest neighbor, sorted in descending order",
+      "The ratio of core points to border points across multiple runs"
+    ],
+    correct: 2,
+    explanation: "In a k-distance plot (where k = MinPts - 1), we compute the distance from every point to its k-th nearest neighbor and plot these sorted values. The optimal ε is chosen at the 'elbow/knee' point."
+  },
+  {
+    id: 51,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Hard",
+    question: "How is the 'knee' or 'elbow' point in a sorted k-distance graph interpreted by a data scientist?",
+    options: [
+      "It represents the exact point where K-Means inertia reaches zero",
+      "It marks the transition threshold between dense cluster points (below knee) and sparse noise points (above knee)",
+      "It indicates the optimal number of clusters k to pass to DBSCAN",
+      "It proves that the feature space is non-Euclidean"
+    ],
+    correct: 1,
+    explanation: "Points with k-distances below the knee correspond to dense cluster regions. Points above the knee have large distances to their k-th neighbor and represent noise. Setting ε at the knee balances cluster discovery and noise suppression."
+  },
+  {
+    id: 52,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Medium",
+    question: "What is the widely accepted academic rule of thumb for choosing MinPts for a D-dimensional dataset?",
+    options: [
+      "MinPts = D^2",
+      "MinPts = D / 2",
+      "MinPts = 100 × D",
+      "MinPts ≥ D + 1 (often MinPts = 2 × D for noisy data)"
+    ],
+    correct: 3,
+    explanation: "A standard heuristic is MinPts ≥ D + 1. For noisy or larger datasets, MinPts = 2 × D is widely recommended to ensure robust density estimation."
+  },
+  {
+    id: 53,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Hard",
+    question: "Why does standard DBSCAN fail on datasets with significantly varying local densities across different clusters?",
+    options: [
+      "Because DBSCAN uses a single global (ε, MinPts) threshold that cannot fit multiple density scales simultaneously",
+      "Because spatial indexing trees like KD-Trees cannot index points with variable density",
+      "Because DBSCAN requires all clusters to have identical covariance matrices",
+      "Because Euclidean distance is invalid in multi-density spaces"
+    ],
+    correct: 0,
+    explanation: "DBSCAN applies one global ε and MinPts across the entire dataset. A parameter setting tuned for a sparse cluster will merge dense clusters, while a setting tuned for dense clusters will classify sparse clusters as noise."
+  },
+  {
+    id: 54,
+    category: "Parameter Tuning & Sensitivity",
+    difficulty: "Hard",
+    question: "Which advanced density-based algorithm was specifically invented to resolve DBSCAN's inability to handle varying densities?",
+    options: [
+      "K-Means++",
+      "Agglomerative Ward Linkage",
+      "OPTICS (Ordering Points To Identify the Clustering Structure)",
+      "Linear Discriminant Analysis"
+    ],
+    correct: 2,
+    explanation: "OPTICS (Ankerst et al., 1999) creates an augmented reachability ordering of the data that represents density-based clustering structure across a continuum of ε values, effectively handling variable densities."
+  },
+
+  // MODULE 8: COMPLEXITY & SPATIAL INDEXING (Q55 - Q60)
+  {
+    id: 55,
+    category: "Complexity & Spatial Indexing",
+    difficulty: "Medium",
+    question: "What is the worst-case time complexity of basic DBSCAN without any spatial indexing structures on N points?",
+    options: [
+      "O(N)",
+      "O(N^2)",
+      "O(N log N)",
+      "O(2^N)"
+    ],
+    correct: 1,
+    explanation: "Without indexing, finding the ε-neighborhood for each of the N points requires scanning all other N-1 points, resulting in N × O(N) = O(N^2) time complexity."
+  },
+  {
+    id: 56,
+    category: "Complexity & Spatial Indexing",
+    difficulty: "Hard",
+    question: "What is the average time complexity of DBSCAN when accelerated by efficient spatial index structures (like KD-Tree or R*-Tree) in low-dimensional space (D ≤ 5)?",
+    options: [
+      "O(1)",
+      "O(N^3)",
+      "O(N^2)",
+      "O(N log N)"
+    ],
+    correct: 3,
+    explanation: "With a spatial index in low dimensions, each neighborhood range query takes O(log N) on average. For N points, the total time complexity drops to O(N log N)."
+  },
+  {
+    id: 57,
+    category: "Complexity & Spatial Indexing",
+    difficulty: "Hard",
+    question: "Why does the performance of spatial index trees (e.g. KD-Tree) degrade towards O(N^2) in high-dimensional datasets (e.g. D > 50)?",
+    options: [
+      "Due to the Curse of Dimensionality, where distance distributions concentrate and index trees must search almost all branches",
+      "Because high-dimensional arrays cannot be represented in binary floating point",
+      "Because DBSCAN requires computing the determinant of the full D×D covariance matrix",
+      "Because Scikit-Learn limits KD-Trees to a maximum of 3 dimensions"
+    ],
+    correct: 0,
+    explanation: "Due to the curse of dimensionality, the distance between any two points converges to roughly the same value. Spatial partitioning trees cannot prune branches effectively and degenerate to exhaustive O(N) linear scans per point (total O(N^2))."
+  },
+  {
+    id: 58,
+    category: "Complexity & Spatial Indexing",
+    difficulty: "Medium",
+    question: "What is the standard auxiliary space complexity of DBSCAN (excluding the distance matrix cache)?",
+    options: [
+      "O(N^2)",
+      "O(N!)",
+      "O(N)",
+      "O(log N)"
+    ],
+    correct: 2,
+    explanation: "DBSCAN only needs to store visited flags, point status labels (core, border, noise), and the expansion seed queue, which requires O(N) linear auxiliary memory."
+  },
+  {
+    id: 59,
+    category: "Complexity & Spatial Indexing",
+    difficulty: "Medium",
+    question: "Which data structure is most appropriate for accelerating DBSCAN range queries on geospatial latitude/longitude data?",
+    options: [
+      "Max-Heap Priority Queue",
+      "Ball Tree or R*-Tree",
+      "Red-Black Binary Search Tree",
+      "Hash Map with linear probing"
+    ],
+    correct: 1,
+    explanation: "Ball Trees and R*-Trees handle geospatial coordinates and metric distances (such as Haversine distance on a sphere) efficiently for neighborhood range queries."
+  },
+  {
+    id: 60,
+    category: "Complexity & Spatial Indexing",
+    difficulty: "Easy",
+    question: "Is DBSCAN restricted strictly to Euclidean distance?",
+    options: [
+      "Yes, Euclidean distance is mathematically required to guarantee density transitivity",
+      "No, but it only supports Manhattan distance as an alternative",
+      "Yes, because non-Euclidean spaces do not have defined circles",
+      "No, DBSCAN works with any valid distance metric dist(p, q) (e.g., Manhattan, Cosine, Haversine, Mahalanobis)"
+    ],
+    correct: 3,
+    explanation: "DBSCAN's theoretical formulation requires only a valid metric dist(p, q) satisfying non-negativity, identity of indiscernibles, symmetry, and triangle inequality."
+  },
+
+  // MODULE 9: COMPARATIVE ANALYSIS (Q61 - Q66)
+  {
+    id: 61,
+    category: "Comparative Analysis",
+    difficulty: "Easy",
+    question: "Which of the following is a key difference between K-Means and DBSCAN?",
+    options: [
+      "K-Means requires specifying k in advance, whereas DBSCAN automatically determines cluster count",
+      "K-Means isolates noise points as label -1, whereas DBSCAN forces all points into clusters",
+      "K-Means is an agglomerative hierarchical method, whereas DBSCAN is a divisive tree method",
+      "K-Means can only handle arbitrary manifold shapes, whereas DBSCAN is restricted to spheres"
+    ],
+    correct: 0,
+    explanation: "Option A is correct: K-Means requires k beforehand. Option B is inverted (DBSCAN isolates noise). Option C is false (both are non-hierarchical). Option D is inverted (DBSCAN handles arbitrary shapes)."
+  },
+  {
+    id: 62,
+    category: "Comparative Analysis",
+    difficulty: "Medium",
+    question: "Why is the traditional Silhouette Coefficient sometimes misleading when evaluating DBSCAN clusters?",
+    options: [
+      "Silhouette scores can only be computed for datasets with exactly 2 features",
+      "Silhouette analysis is mathematically restricted to Supervised Learning models",
+      "Silhouette Coefficient assumes convex/spherical clusters based on distance to nearest center and penalizes complex non-convex shapes",
+      "DBSCAN labels are non-numeric strings that cannot be parsed by metric functions"
+    ],
+    correct: 2,
+    explanation: "Silhouette Coefficient evaluates cluster validity by comparing intra-cluster distance to nearest-cluster distance using point-to-point means, which implicitly favors convex/spherical clusters and penalizes intertwined non-linear shapes like concentric rings."
+  },
+  {
+    id: 63,
+    category: "Comparative Analysis",
+    difficulty: "Hard",
+    question: "How does DBSCAN relate conceptually to Single-Linkage Hierarchical Clustering?",
+    options: [
+      "DBSCAN is identical to complete-linkage clustering at dendrogram depth 1",
+      "DBSCAN can be viewed as single-linkage clustering cut at height ε, but with noise points filtered out via the MinPts condition",
+      "Single-linkage clustering is centroid-based, whereas DBSCAN is medoid-based",
+      "There is zero theoretical relationship between the two algorithms"
+    ],
+    correct: 1,
+    explanation: "Single-linkage merges clusters based on the minimum distance between any pair of points (chaining effect). DBSCAN essentially follows single-linkage chaining up to threshold ε, but prevents false bridges by requiring MinPts density at core points."
+  },
+  {
+    id: 64,
+    category: "Comparative Analysis",
+    difficulty: "Hard",
+    question: "Which internal clustering validation index is specifically designed to evaluate density-based clusters of arbitrary shapes without assuming convexity?",
+    options: [
+      "Inertia (Within-Cluster Sum of Squares)",
+      "Davies-Bouldin Index",
+      "Dunn Index with Centroid Radii",
+      "DBCV (Density-Based Clustering Validation)"
+    ],
+    correct: 3,
+    explanation: "DBCV (Moulavi et al., 2014) computes density within clusters and density in the separation regions between clusters, making it the premier validation index for density-based algorithms like DBSCAN and HDBSCAN."
+  },
+  {
+    id: 65,
+    category: "Comparative Analysis",
+    difficulty: "Medium",
+    question: "When would K-Means be strictly preferred over DBSCAN in an enterprise production environment?",
+    options: [
+      "When the dataset has millions of records with known spherical distribution and strict low-latency requirements",
+      "When the dataset contains severe adversarial outliers that must be highlighted",
+      "When clusters are shaped like intertwined spirals and moons",
+      "When feature scaling cannot be performed on the input data"
+    ],
+    correct: 0,
+    explanation: "K-Means has O(N·K·I) linear complexity, scales smoothly to massive datasets, and executes rapidly when clusters are known to be spherical and compact."
+  },
+  {
+    id: 66,
+    category: "Comparative Analysis",
+    difficulty: "Medium",
+    question: "How does Mean Shift clustering compare to DBSCAN?",
+    options: [
+      "Mean Shift requires specifying the exact number of clusters k in advance",
+      "Both are centroid-only algorithms that ignore outliers completely",
+      "Both are density-based, but Mean Shift shifts points along kernel density gradients to locate modes, whereas DBSCAN groups points by thresholded neighborhood reachability",
+      "Mean Shift cannot discover non-linear cluster boundaries under any conditions"
+    ],
+    correct: 2,
+    explanation: "Mean Shift is a non-parametric mode-seeking algorithm that shifts candidates toward regions of higher density using a kernel function, whereas DBSCAN constructs flat density-connected components based on (ε, MinPts)."
+  },
+
+  // MODULE 10: SCIKIT-LEARN & ADVANCED TOPICS (Q67 - Q70)
+  {
+    id: 67,
+    category: "Scikit-Learn & Advanced Edge Cases",
+    difficulty: "Hard",
+    question: "Why does Scikit-Learn's `DBSCAN` class provide `fit()` and `fit_predict()`, but NO `predict()` method for new incoming instances?",
+    options: [
+      "It is a known software bug in Scikit-Learn that has not yet been resolved",
+      "Because assigning a new point dynamically could alter local density and turn existing border points into core points, mutating the entire cluster topology",
+      "Because Scikit-Learn estimators are only allowed to implement `predict()` if they are supervised classifiers",
+      "Because DBSCAN stores points exclusively as 64-bit sparse hashes that cannot accept new vectors"
+    ],
+    correct: 1,
+    explanation: "DBSCAN is transductive, not inductive. Adding a new point may change neighbor counts, turn border points into core points, and bridge two previously disconnected clusters. A simple static assignment is theoretically ill-defined."
+  },
+  {
+    id: 68,
+    category: "Scikit-Learn & Advanced Edge Cases",
+    difficulty: "Hard",
+    question: "If a machine learning engineer MUST classify new incoming data points into existing DBSCAN clusters in real-time, what is the standard recommended approach?",
+    options: [
+      "Re-initialize DBSCAN with random weights and fit on the new single sample",
+      "Force-fit K-Means with k equal to the number of DBSCAN clusters",
+      "Calculate the arithmetic mean of all points including noise and take the dot product",
+      "Train a `KNeighborsClassifier` exclusively on the DBSCAN Core Points (`components_`) and their labels (`labels_[core_sample_indices_]`)"
+    ],
+    correct: 3,
+    explanation: "Training a k-NN classifier on the Core Points allows new points to be classified based on proximity to the robust structural backbone of each cluster while ignoring noisy border points."
+  },
+  {
+    id: 69,
+    category: "Scikit-Learn & Advanced Edge Cases",
+    difficulty: "Medium",
+    question: "In Scikit-Learn, after running `db = DBSCAN().fit(X)`, which attribute contains the indices of the identified Core Points?",
+    options: [
+      "`db.core_sample_indices_`",
+      "`db.core_points_`",
+      "`db.cluster_centers_`",
+      "`db.indices_`"
+    ],
+    correct: 0,
+    explanation: "In Scikit-Learn, `db.core_sample_indices_` contains the integer indices of core samples, `db.components_` contains the actual coordinates of core samples, and `db.labels_` contains cluster assignments (-1 for noise)."
+  },
+  {
+    id: 70,
+    category: "Scikit-Learn & Advanced Edge Cases",
+    difficulty: "Medium",
+    question: "Why is Feature Scaling (e.g. `StandardScaler`) considered MANDATORY before running DBSCAN on multi-feature datasets?",
+    options: [
+      "Because DBSCAN will crash if feature values are negative numbers",
+      "Because unscaled features cause the algorithm to generate imaginary numbers in distance calculations",
+      "Because features with large numerical ranges will dominate the Euclidean distance calculation, rendering ε meaningless along smaller features",
+      "Because Scikit-Learn's `DBSCAN` class strictly checks that all features have mean = 0 and std = 1"
+    ],
+    correct: 2,
+    explanation: "Since ε is a single scalar radius applied across all dimensions, any unscaled feature with large magnitude (e.g., Salary in thousands) will dwarf a feature with small magnitude (e.g., Age in tens), distorting distance calculations entirely."
+  }
+];
+
+/* =========================================================================================
+   APPLICATION STATE & CONTROLLER
+========================================================================================= */
+let appMode = 'practice'; // 'practice' or 'exam'
+let currentQuestionIndex = 0;
+let userSelections = {}; // { qIndex: selectedOptionIndex }
+let flaggedQuestions = {}; // { qIndex: boolean }
+let examTimerInterval = null;
+let examTimeRemaining = 70 * 90; // 90 seconds per question = 105 mins total
+let examSubmitted = false;
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', () => {
+  renderNavigatorGrid();
+  loadQuestion(0);
+  updateProgressBar();
+});
+
+function setAppMode(mode) {
+  if (appMode === mode) return;
+
+  if (mode === 'exam') {
+    if (!confirm("Switch to EXAM MODE?\n\n- Instant feedback and explanations will be hidden.\n- Exam timer will start.\n- You will receive a complete diagnostic report upon submission.")) {
+      return;
+    }
+    appMode = 'exam';
+    document.getElementById('btnModeExam').classList.add('active');
+    document.getElementById('btnModePractice').classList.remove('active');
+    document.getElementById('btnSubmitExam').style.display = 'inline-flex';
+    startExamTimer();
+  } else {
+    appMode = 'practice';
+    document.getElementById('btnModePractice').classList.add('active');
+    document.getElementById('btnModeExam').classList.remove('active');
+    document.getElementById('btnSubmitExam').style.display = 'none';
+    stopExamTimer();
+    document.getElementById('examTimer').innerHTML = "⏱️ Practice (Untimed)";
+  }
+
+  loadQuestion(currentQuestionIndex);
+  renderNavigatorGrid();
+}
+
+function startExamTimer() {
+  clearInterval(examTimerInterval);
+  updateTimerDisplay();
+  examTimerInterval = setInterval(() => {
+    examTimeRemaining--;
+    updateTimerDisplay();
+    if (examTimeRemaining <= 0) {
+      clearInterval(examTimerInterval);
+      alert("Time is up! Submitting examination automatically.");
+      submitExam();
+    }
+  }, 1000);
+}
+
+function stopExamTimer() {
+  clearInterval(examTimerInterval);
+}
+
+function updateTimerDisplay() {
+  const hours = Math.floor(examTimeRemaining / 3600);
+  const minutes = Math.floor((examTimeRemaining % 3600) / 60);
+  const seconds = examTimeRemaining % 60;
+  document.getElementById('examTimer').innerHTML = `⏱️ ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
+
+function pad(num) {
+  return num < 10 ? '0' + num : num;
+}
+
+function loadQuestion(index) {
+  currentQuestionIndex = index;
+  const q = examQuestions[index];
+
+  // Update Meta Header
+  document.getElementById('questionCounter').innerText = `Question ${index + 1} of ${examQuestions.length}`;
+  document.getElementById('badgeCategory').innerText = q.category;
+  
+  const diffBadge = document.getElementById('badgeDifficulty');
+  diffBadge.innerText = q.difficulty;
+  diffBadge.className = `badge badge-difficulty-${q.difficulty.toLowerCase()}`;
+
+  // Chained Dataset Context Handling
+  const contextContainer = document.getElementById('contextBoxContainer');
+  if (q.category.includes("Coordinates")) {
+    contextContainer.innerHTML = `
+      <div class="context-box">
+        <strong>📍 DATASET 1 (2D Space):</strong><br>
+        P1(1,1), P2(2,1), P3(1,2), P4(2,2), P5(5,5), P6(6,5), P7(9,9)<br>
+        <em>Parameters:</em> ε = 1.5, MinPts = 4 (Metric: Euclidean Distance)
+      </div>`;
+  } else if (q.category.includes("Distance Matrix")) {
+    contextContainer.innerHTML = `
+      <div class="context-box">
+        <strong>📊 DATASET 2 (Distance Matrix between A, B, C, D, E, F):</strong><br>
+        d(A,B)=1.2, d(A,C)=1.8, d(A,D)=3.5, d(A,E)=4.0, d(A,F)=5.0<br>
+        d(B,C)=1.4, d(B,D)=2.8, d(B,E)=3.2, d(B,F)=4.5<br>
+        d(C,D)=1.9, d(C,E)=3.0, d(C,F)=4.1<br>
+        d(D,E)=1.5, d(D,F)=1.7<br>
+        d(E,F)=1.1<br>
+        <em>Parameters:</em> ε = 2.0, MinPts = 3
+      </div>`;
+  } else {
+    contextContainer.innerHTML = '';
+  }
+
+  // Question Stem
+  document.getElementById('questionStem').innerText = q.question;
+
+  // Options
+  const optionsContainer = document.getElementById('optionsContainer');
+  optionsContainer.innerHTML = '';
+
+  const selectedOpt = userSelections[index];
+  const isAnswered = selectedOpt !== undefined;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((optText, optIdx) => {
+    const optDiv = document.createElement('div');
+    optDiv.className = 'option-item';
+
+    if (selectedOpt === optIdx) {
+      optDiv.classList.add('selected');
+    }
+
+    if (appMode === 'practice' && isAnswered) {
+      if (optIdx === q.correct) {
+        optDiv.classList.add('correct-revealed');
+      } else if (selectedOpt === optIdx) {
+        optDiv.classList.add('wrong-revealed');
+      }
+    }
+
+    optDiv.onclick = () => handleOptionSelection(optIdx);
+
+    optDiv.innerHTML = `
+      <div class="opt-key">${letters[optIdx]}</div>
+      <div class="opt-text">${optText}</div>
+    `;
+    optionsContainer.appendChild(optDiv);
+  });
+
+  // Explanation in Practice Mode
+  const explContainer = document.getElementById('explanationContainer');
+  if (appMode === 'practice' && isAnswered) {
+    const isCorrect = selectedOpt === q.correct;
+    explContainer.innerHTML = `
+      <div class="explanation-box" style="border-left-color: ${isCorrect ? 'var(--success)' : 'var(--danger)'};">
+        <div class="explanation-title" style="color: ${isCorrect ? '#047857' : '#b91c1c'};">
+          ${isCorrect ? '✅ Correct Choice' : '❌ Incorrect Selection'}
+        </div>
+        <div>${q.explanation}</div>
+      </div>
+    `;
+  } else {
+    explContainer.innerHTML = '';
+  }
+
+  // Update Flag Button Style
+  const btnFlag = document.getElementById('btnFlag');
+  if (flaggedQuestions[index]) {
+    btnFlag.innerText = '🚩 Flagged';
+    btnFlag.className = 'btn btn-warning';
+  } else {
+    btnFlag.innerText = '🏳️ Flag for Review';
+    btnFlag.className = 'btn btn-outline';
+  }
+
+  // Prev / Next button states
+  document.getElementById('btnPrev').disabled = (index === 0);
+  document.getElementById('btnNext').style.display = (index === examQuestions.length - 1) ? 'none' : 'inline-flex';
+
+  updateProgressBar();
+  renderNavigatorGrid();
+}
+
+function handleOptionSelection(optIdx) {
+  userSelections[currentQuestionIndex] = optIdx;
+  loadQuestion(currentQuestionIndex);
+}
+
+function navigateQuestion(delta) {
+  const nextIdx = currentQuestionIndex + delta;
+  if (nextIdx >= 0 && nextIdx < examQuestions.length) {
+    loadQuestion(nextIdx);
+  }
+}
+
+function toggleFlagCurrentQuestion() {
+  flaggedQuestions[currentQuestionIndex] = !flaggedQuestions[currentQuestionIndex];
+  loadQuestion(currentQuestionIndex);
+}
+
+function renderNavigatorGrid() {
+  const grid = document.getElementById('questionGrid');
+  grid.innerHTML = '';
+
+  examQuestions.forEach((q, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'grid-btn';
+    btn.innerText = idx + 1;
+
+    if (idx === currentQuestionIndex) {
+      btn.classList.add('active');
+    }
+
+    const isAnswered = userSelections[idx] !== undefined;
+    if (isAnswered) {
+      if (appMode === 'practice') {
+        if (userSelections[idx] === q.correct) {
+          btn.classList.add('correct-flag');
+        } else {
+          btn.classList.add('wrong-flag');
+        }
+      } else {
+        btn.classList.add('answered');
+      }
+    }
+
+    if (flaggedQuestions[idx]) {
+      btn.classList.add('flagged');
+    }
+
+    btn.onclick = () => loadQuestion(idx);
+    grid.appendChild(btn);
+  });
+}
+
+function updateProgressBar() {
+  const answeredCount = Object.keys(userSelections).length;
+  const flaggedCount = Object.values(flaggedQuestions).filter(Boolean).length;
+  const pct = Math.round((answeredCount / examQuestions.length) * 100);
+
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressPercent').innerText = pct + '%';
+  document.getElementById('answeredCount').innerText = `${answeredCount} Answered`;
+  document.getElementById('flaggedCount').innerText = `${flaggedCount} Flagged`;
+}
+
+function promptSubmitExam() {
+  const answeredCount = Object.keys(userSelections).length;
+  const remaining = examQuestions.length - answeredCount;
+
+  if (remaining > 0) {
+    if (!confirm(`You have ${remaining} unanswered questions.\n\nAre you sure you want to submit your examination?`)) {
+      return;
+    }
+  } else {
+    if (!confirm("Are you ready to submit your exam and view the full grading dashboard?")) {
+      return;
+    }
+  }
+  submitExam();
+}
+
+function submitExam() {
+  stopExamTimer();
+  examSubmitted = true;
+
+  let correctCount = 0;
+  const reviewContainer = document.getElementById('reviewListContainer');
+  reviewContainer.innerHTML = '';
+
+  const letters = ['A', 'B', 'C', 'D'];
+
+  examQuestions.forEach((q, idx) => {
+    const userAns = userSelections[idx];
+    const isCorrect = (userAns === q.correct);
+    if (isCorrect) correctCount++;
+
+    const item = document.createElement('div');
+    item.className = `review-item ${isCorrect ? 'pass' : 'fail'}`;
+
+    const userAnsStr = userAns !== undefined ? `${letters[userAns]}. ${q.options[userAns]}` : '<span style="color: var(--danger);">Unanswered</span>';
+    const correctAnsStr = `${letters[q.correct]}. ${q.options[q.correct]}`;
+
+    item.innerHTML = `
+      <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 6px;">
+        Q${idx + 1}: ${q.question}
+      </div>
+      <div style="font-size: 0.85rem; margin-bottom: 4px;">
+        <strong>Your Choice:</strong> ${userAnsStr}
+      </div>
+      <div style="font-size: 0.85rem; color: #047857; margin-bottom: 8px;">
+        <strong>Correct Answer:</strong> ${correctAnsStr}
+      </div>
+      <div style="font-size: 0.85rem; background: #f1f5f9; padding: 10px; border-radius: 6px; color: var(--primary);">
+        <strong>Explanation:</strong> ${q.explanation}
+      </div>
+    `;
+    reviewContainer.appendChild(item);
+  });
+
+  const percentage = Math.round((correctCount / examQuestions.length) * 100);
+  document.getElementById('resScore').innerText = `${correctCount}/${examQuestions.length}`;
+  document.getElementById('resPercent').innerText = `${percentage}%`;
+
+  let grade = "Novice";
+  let gradeColor = "var(--danger)";
+  if (percentage >= 90) { grade = "Distinguished / Master"; gradeColor = "var(--success)"; }
+  else if (percentage >= 80) { grade = "Advanced Expert"; gradeColor = "var(--success)"; }
+  else if (percentage >= 70) { grade = "Proficient"; gradeColor = "var(--accent)"; }
+  else if (percentage >= 55) { grade = "Competent"; gradeColor = "var(--warning)"; }
+
+  const statusElem = document.getElementById('resStatus');
+  statusElem.innerText = grade;
+  statusElem.style.color = gradeColor;
+
+  document.getElementById('resultModal').style.display = 'flex';
+}
+
+function closeModalAndSwitchToPractice() {
+  document.getElementById('resultModal').style.display = 'none';
+  setAppMode('practice');
+}
+
+function restartEntireAssessment() {
+  if (confirm("Reset all answers and restart the examination?")) {
+    userSelections = {};
+    flaggedQuestions = {};
+    examTimeRemaining = 70 * 90;
+    document.getElementById('resultModal').style.display = 'none';
+    setAppMode('practice');
+    loadQuestion(0);
+  }
+}
+</script>
+</body>
+</html>
